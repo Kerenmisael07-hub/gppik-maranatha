@@ -1,0 +1,274 @@
+﻿@extends('layouts.app')
+
+@section('content')
+<div class="page-content">
+    @foreach($contents as $content)
+        @if($content->type == 'hero')
+            <!-- Hero Section -->
+            <div class="px-4 py-8">
+                <div class="max-w-6xl w-full mx-auto">
+                    <div class="grid md:grid-cols-2 gap-12 items-center">
+                        @php
+                            $textContent = '
+                                '.($content->title ? '<h1 style="color: #0066cc; font-size: 48px; font-weight: 700; line-height: 1.2; margin-bottom: 16px;">'.$content->title.'</h1>' : '').'
+                                '.($content->content ? '<p style="color: #4b5563; font-size: 16px; line-height: 1.6;">'.trim($content->content).'</p>' : '').'
+                            ';
+                            
+                            $imageContent = '';
+                            if($content->images && count($content->images) > 0) {
+                                $imageContent = '<div class="hero-slider" style="position:relative;max-width:500px;margin:0 auto">
+                                    <div class="slider-container" style="position:relative;overflow:hidden;border-radius:12px">'.
+                                    implode('', array_map(function($img, $index) {
+                                        return '<div class="slider-item" style="display:'.($index === 0 ? 'block' : 'none').'">
+                                            <img src="'.asset('storage/'.$img).'" alt="Slide" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.15)">
+                                        </div>';
+                                    }, $content->images, array_keys($content->images))).
+                                    '</div>
+                                    <button onclick="prevSlide(this)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;padding:12px 16px;border-radius:50%;cursor:pointer;font-size:18px;z-index:10">❮</button>
+                                    <button onclick="nextSlide(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;padding:12px 16px;border-radius:50%;cursor:pointer;font-size:18px;z-index:10">❯</button>
+                                </div>';
+                            } elseif($content->image_path) {
+                                $imageContent = '<div class="flex justify-center">
+                                    <div class="w-full max-w-md">
+                                        <img src="'.asset('storage/'.$content->image_path).'" alt="'.$content->title.'" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.15);">
+                                    </div>
+                                </div>';
+                            }
+                        @endphp
+                        
+                        @if($content->image_position == 'left')
+                            <!-- Image Left -->
+                            @if($imageContent)
+                            <div class="space-y-6">{!! $imageContent !!}</div>
+                            @endif
+                            <!-- Text Right -->
+                            <div class="space-y-6">{!! $textContent !!}</div>
+                        @else
+                            <!-- Text Left -->
+                            <div class="space-y-6">{!! $textContent !!}</div>
+                            <!-- Image Right -->
+                            @if($imageContent)
+                            <div class="space-y-6">{!! $imageContent !!}</div>
+                            @endif
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+        @elseif($content->type == 'text')
+            <!-- Text Section -->
+            <div class="px-4 py-8">
+                <div class="max-w-6xl w-full mx-auto">
+                    @if($content->images && count($content->images) > 0 || $content->image_path)
+                        <!-- Text with Image Layout -->
+                        <div class="grid md:grid-cols-2 gap-12 items-center">
+                            @php
+                                $textContent = '
+                                    '.($content->title ? '<h2 style="color:var(--blue-1);font-size:32px;font-weight:700;margin-bottom:16px;">'.$content->title.'</h2>' : '').'
+                                    '.($content->content ? '<div style="color:#4b5563;font-size:16px;line-height:1.8;">'.trim($content->content).'</div>' : '').'
+                                ';
+                                
+                                $imageContent = '';
+                                if($content->images && count($content->images) > 0) {
+                                    $imageContent = '<div class="hero-slider" style="position:relative;max-width:500px;margin:0 auto">
+                                        <div class="slider-container" style="position:relative;overflow:hidden;border-radius:12px">'.
+                                        implode('', array_map(function($img, $index) {
+                                            return '<div class="slider-item" style="display:'.($index === 0 ? 'block' : 'none').'">
+                                                <img src="'.asset('storage/'.$img).'" alt="Slide" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.15)">
+                                            </div>';
+                                        }, $content->images, array_keys($content->images))).
+                                        '</div>
+                                        <button onclick="prevSlide(this)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;padding:12px 16px;border-radius:50%;cursor:pointer;font-size:18px;z-index:10">❮</button>
+                                        <button onclick="nextSlide(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;padding:12px 16px;border-radius:50%;cursor:pointer;font-size:18px;z-index:10">❯</button>
+                                    </div>';
+                                } elseif($content->image_path) {
+                                    $imageContent = '<div class="flex justify-center">
+                                        <div class="w-full max-w-md">
+                                            <img src="'.asset('storage/'.$content->image_path).'" alt="'.$content->title.'" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.15);">
+                                        </div>
+                                    </div>';
+                                }
+                            @endphp
+                            
+                            @if($content->image_position == 'left')
+                                <!-- Image Left -->
+                                @if($imageContent)
+                                <div>{!! $imageContent !!}</div>
+                                @endif
+                                <!-- Text Right -->
+                                <div>{!! $textContent !!}</div>
+                            @else
+                                <!-- Text Left -->
+                                <div>{!! $textContent !!}</div>
+                                <!-- Image Right -->
+                                @if($imageContent)
+                                <div>{!! $imageContent !!}</div>
+                                @endif
+                            @endif
+                        </div>
+                    @else
+                        <!-- Text Only -->
+                        @if($content->title)
+                        <h2 style="color:var(--blue-1);font-size:32px;font-weight:700;margin-bottom:16px;">
+                            {{ $content->title }}
+                        </h2>
+                        @endif
+                        
+                        @if($content->content)
+                        <div style="color:#4b5563;font-size:16px;line-height:1.8;">
+                            {{ trim($content->content) }}
+                        </div>
+                        @endif
+                    @endif
+                </div>
+            </div>
+
+        @elseif($content->type == 'image')
+            <!-- Image Section -->
+            <div class="px-4 py-8">
+                <div class="max-w-6xl w-full mx-auto text-center">
+                    @if($content->title)
+                    <h3 style="color:var(--blue-1);font-size:24px;font-weight:700;margin-bottom:16px;">
+                        {{ $content->title }}
+                    </h3>
+                    @endif
+                    
+                    @if($content->images && count($content->images) > 0)
+                        <!-- Multiple Images Slider -->
+                        <div class="hero-slider" style="position:relative;max-width:800px;margin:0 auto 20px">
+                            <div class="slider-container" style="position:relative;overflow:hidden;border-radius:12px">
+                                @foreach($content->images as $index => $img)
+                                <div class="slider-item" style="display:{{ $index === 0 ? 'block' : 'none' }}">
+                                    <img src="{{ asset('storage/' . $img) }}" 
+                                         alt="Slide {{ $index + 1 }}" 
+                                         style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.15);margin:0 auto;display:block;">
+                                </div>
+                                @endforeach
+                            </div>
+                            <button onclick="prevSlide(this)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;padding:12px 16px;border-radius:50%;cursor:pointer;font-size:18px;z-index:10">❮</button>
+                            <button onclick="nextSlide(this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;padding:12px 16px;border-radius:50%;cursor:pointer;font-size:18px;z-index:10">❯</button>
+                        </div>
+                    @elseif($content->image_path)
+                        <!-- Single Image -->
+                        <img src="{{ asset('storage/' . $content->image_path) }}" 
+                             alt="{{ $content->title }}" 
+                             style="max-width:100%;height:auto;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.15);margin:0 auto;">
+                    @endif
+                    
+                    @if($content->content)
+                    <p style="color:#6b7280;font-size:14px;margin-top:12px;font-style:italic;">
+                        {{ $content->content }}
+                    </p>
+                    @endif
+                </div>
+            </div>
+
+        @elseif(in_array($content->type, ['visi', 'misi', 'sejarah']))
+            <!-- Visi/Misi/Sejarah Section -->
+            <div class="px-4 py-8" style="background:#f8f9fa;">
+                <div class="max-w-6xl w-full mx-auto">
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <!-- Image Left (if exists) -->
+                        @if($content->image_path)
+                        <div class="flex items-center justify-center">
+                            <img src="{{ asset('storage/' . $content->image_path) }}" 
+                                 alt="{{ $content->title }}" 
+                                 style="width:100%;max-width:500px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.15);">
+                        </div>
+                        @endif
+
+                        <!-- Content -->
+                        <div class="space-y-8">
+                            <div class="box">
+                                <h3 style="color:var(--blue-1);font-size:24px;font-weight:700;margin-bottom:12px;">
+                                    <i class="fas fa-{{ $content->type == 'visi' ? 'eye' : ($content->type == 'misi' ? 'bullseye' : 'history') }}"></i> 
+                                    {{ $content->title ?? ucfirst($content->type) }}
+                                </h3>
+                                @if($content->content)
+                                <p style="color:#4b5563;line-height:1.8;">{{ trim($content->content) }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+    @endforeach
+</div>
+
+<style>
+    @media (max-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    .slider-item {
+        animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+</style>
+
+<script>
+function nextSlide(button) {
+    const slider = button.closest('.hero-slider');
+    if (!slider) return;
+    
+    const items = slider.querySelectorAll('.slider-item');
+    if (items.length <= 1) return;
+    
+    let currentIndex = -1;
+    
+    items.forEach((item, index) => {
+        if (item.style.display === 'block' || window.getComputedStyle(item).display === 'block') {
+            currentIndex = index;
+            item.style.display = 'none';
+        }
+    });
+    
+    const nextIndex = (currentIndex + 1) % items.length;
+    items[nextIndex].style.display = 'block';
+}
+
+function prevSlide(button) {
+    const slider = button.closest('.hero-slider');
+    if (!slider) return;
+    
+    const items = slider.querySelectorAll('.slider-item');
+    if (items.length <= 1) return;
+    
+    let currentIndex = -1;
+    
+    items.forEach((item, index) => {
+        if (item.style.display === 'block' || window.getComputedStyle(item).display === 'block') {
+            currentIndex = index;
+            item.style.display = 'none';
+        }
+    });
+    
+    const prevIndex = currentIndex - 1 < 0 ? items.length - 1 : currentIndex - 1;
+    items[prevIndex].style.display = 'block';
+}
+
+// Auto slide every 5 seconds
+document.addEventListener('DOMContentLoaded', function() {
+    const sliders = document.querySelectorAll('.hero-slider');
+    
+    sliders.forEach(slider => {
+        const items = slider.querySelectorAll('.slider-item');
+        
+        // Only auto-slide if there are multiple items
+        if (items.length > 1) {
+            setInterval(() => {
+                const nextBtn = slider.querySelector('button:last-of-type');
+                if (nextBtn) {
+                    nextSlide(nextBtn);
+                }
+            }, 5000);
+        }
+    });
+});
+</script>
+@endsection
