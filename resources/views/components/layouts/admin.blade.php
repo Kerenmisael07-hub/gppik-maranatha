@@ -5,6 +5,10 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>{{ $title ?? 'Admin - GPPIK' }}</title>
+	@if(site_setting('favicon'))
+		<link rel="icon" href="{{ asset('storage/' . site_setting('favicon')) }}" type="image/x-icon">
+		<link rel="shortcut icon" href="{{ asset('storage/' . site_setting('favicon')) }}" type="image/x-icon">
+	@endif
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 	<style>
 		:root {--blue-1:#003a8c;--blue-2:#0066cc;--muted:#6b7280;--dark:#0b132b;--gray-light:#f0f4ff;}
