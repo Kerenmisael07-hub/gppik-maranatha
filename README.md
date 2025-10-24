@@ -1,6 +1,93 @@
 # Dokumentasi Modul Daftar Nyanyian (NHYK)
 ## GPPIK Maranatha Antan - Sistem Manajemen Gereja
 
+## Flowchart Sistem
+```mermaid
+flowchart TD
+    A[Start] --> B{Login}
+    B -->|Admin| C[Dashboard Admin]
+    B -->|User| D[Halaman Publik]
+    
+    C --> E[Manajemen Nyanyian]
+    C --> F[Manajemen Jemaat]
+    C --> G[Manajemen Keuangan]
+    C --> H[Manajemen Jadwal]
+    
+    E --> E1[Tambah Nyanyian]
+    E --> E2[Edit Nyanyian]
+    E --> E3[Hapus Nyanyian]
+    
+    F --> F1[Tambah Jemaat]
+    F --> F2[Edit Data Jemaat]
+    F --> F3[Hapus Data Jemaat]
+    
+    G --> G1[Input Transaksi]
+    G --> G2[Laporan Keuangan]
+    
+    H --> H1[Tambah Jadwal]
+    H --> H2[Edit Jadwal]
+    H --> H3[Hapus Jadwal]
+    
+    D --> I[Lihat Nyanyian]
+    D --> J[Lihat Jadwal]
+    D --> K[Lihat Profil Gereja]
+```
+
+## Entity Relationship Diagram (ERD)
+```mermaid
+erDiagram
+    USERS ||--o{ TRANSAKSI_KEUANGAN : manages
+    USERS ||--o{ JADWAL : manages
+    USERS ||--o{ NYANYIAN : manages
+    USERS {
+        bigint id PK
+        string name
+        string email
+        string password
+        timestamp email_verified_at
+        string remember_token
+        timestamp created_at
+        timestamp updated_at
+    }
+    JEMAAT {
+        bigint id PK
+        string nama_lengkap
+        date tgl_lahir
+        enum status_baptis
+        string sektor
+        timestamp created_at
+        timestamp updated_at
+    }
+    NYANYIAN {
+        bigint id PK
+        integer nomor_lagu
+        string judul_lagu
+        string kategori
+        string sumber_buku
+        text lirik
+        boolean status
+        timestamp created_at
+        timestamp updated_at
+    }
+    TRANSAKSI_KEUANGAN {
+        bigint id PK
+        date tanggal
+        string keterangan
+        enum jenis
+        integer jumlah
+        timestamp created_at
+        timestamp updated_at
+    }
+    JADWAL {
+        bigint id PK
+        datetime tanggal_waktu
+        string jenis_acara
+        string pelayan_firman
+        timestamp created_at
+        timestamp updated_at
+    }
+```
+
 ---
 
 ## A. KEBUTUHAN BACKEND (CRUD FUNCTIONALITY)
