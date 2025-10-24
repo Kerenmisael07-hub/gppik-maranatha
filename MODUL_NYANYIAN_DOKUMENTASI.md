@@ -393,8 +393,7 @@ http://127.0.0.1:5500/nyanyian
 ## H. LOGIN CREDENTIALS
 
 **Admin Access:**
-- Email: `admin@gmail.com`
-- Password: `pemilikgereja435`
+
 
 ---
 
