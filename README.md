@@ -3,71 +3,34 @@
 
 ## Flowchart Sistem
 ```mermaid
-graph TB
-    %% Styling
-    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px;
-    classDef highlight fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef process fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+flowchart TD
+    A[Start] --> B{Login}
+    B -->|Admin| C[Dashboard Admin]
+    B -->|User| D[Halaman Publik]
     
-    %% Main Flow
-    Start([Start]):::highlight --> Login{Login System}
+    C --> E[Manajemen Nyanyian]
+    C --> F[Manajemen Jemaat]
+    C --> G[Manajemen Keuangan]
+    C --> H[Manajemen Jadwal]
     
-    %% Admin Section
-    subgraph AdminPanel [Dashboard Admin]
-        direction TB
-        Login -->|Admin| Admin[Admin Dashboard]:::highlight
-        
-        %% Nyanyian Management
-        subgraph Nyanyian [Manajemen Nyanyian]
-            direction LR
-            Admin --> N[Nyanyian]:::process
-            N --> N1[Tambah Nyanyian]
-            N --> N2[Edit Nyanyian]
-            N --> N3[Hapus Nyanyian]
-            N --> N4[Lihat Daftar]
-        end
-        
-        %% Jemaat Management
-        subgraph Jemaat [Manajemen Jemaat]
-            direction LR
-            Admin --> J[Jemaat]:::process
-            J --> J1[Tambah Jemaat]
-            J --> J2[Edit Data]
-            J --> J3[Hapus Data]
-            J --> J4[Lihat Data]
-        end
-        
-        %% Keuangan Management
-        subgraph Keuangan [Manajemen Keuangan]
-            direction LR
-            Admin --> K[Keuangan]:::process
-            K --> K1[Input Transaksi]
-            K --> K2[Edit Transaksi]
-            K --> K3[Hapus Transaksi]
-            K --> K4[Laporan]
-        end
-        
-        %% Jadwal Management
-        subgraph Jadwal [Manajemen Jadwal]
-            direction LR
-            Admin --> S[Jadwal]:::process
-            S --> S1[Tambah Jadwal]
-            S --> S2[Edit Jadwal]
-            S --> S3[Hapus Jadwal]
-            S --> S4[Lihat Jadwal]
-        end
-    end
+    E --> E1[Tambah Nyanyian]
+    E --> E2[Edit Nyanyian]
+    E --> E3[Hapus Nyanyian]
     
-    %% Public Section
-    subgraph PublicArea [Area Publik]
-        direction TB
-        Login -->|User| Public[Halaman Publik]:::highlight
-        Public --> P1[Lihat Nyanyian]
-        Public --> P2[Lihat Jadwal]
-        Public --> P3[Lihat Profil Gereja]
-        Public --> P4[Informasi Umum]
-    end
-```
+    F --> F1[Tambah Jemaat]
+    F --> F2[Edit Data Jemaat]
+    F --> F3[Hapus Data Jemaat]
+    
+    G --> G1[Input Transaksi]
+    G --> G2[Laporan Keuangan]
+    
+    H --> H1[Tambah Jadwal]
+    H --> H2[Edit Jadwal]
+    H --> H3[Hapus Jadwal]
+    
+    D --> I[Lihat Nyanyian]
+    D --> J[Lihat Jadwal]
+    D --> K[Lihat Profil Gereja]
 ```
 
 ## Entity Relationship Diagram (ERD)
